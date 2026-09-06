@@ -10,6 +10,7 @@ import Gifts from '../components/Gifts'
 import Rsvp from '../components/Rsvp'
 import Closing from '../components/Closing'
 import MusicToggle from '../components/MusicToggle'
+import FloatingAnimation from '../components/FloatingAnimation'
 import useWeddingConfig from '../hooks/useWeddingConfig'
 
 export default function Invitation() {
@@ -26,15 +27,19 @@ export default function Invitation() {
 
   function startMusic() {
     if (!config.musikUrl || !audioRef.current) return
-    audioRef.current.play().catch(() => {})
-    setPlaying(true)
+    audioRef.current
+      .play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false))
   }
 
   function toggleMusic() {
     if (!audioRef.current) return
     if (audioRef.current.paused) {
-      audioRef.current.play().catch(() => {})
-      setPlaying(true)
+      audioRef.current
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => setPlaying(false))
     } else {
       audioRef.current.pause()
       setPlaying(false)
@@ -51,8 +56,13 @@ export default function Invitation() {
     )
   }
 
+  const stageStyle = config.customBackgroundUrl
+    ? { '--bg-custom-url': `url("${config.customBackgroundUrl}")` }
+    : undefined
+
   return (
-    <div className="stage">
+    <div className="stage" data-theme={config.tema || 'emerald-gold'} style={stageStyle}>
+      <FloatingAnimation active={config.animasiKelopak !== false} />
       <div className="invite">
         {!opened && (
           <Cover
@@ -80,7 +90,15 @@ export default function Invitation() {
         )}
 
         <MusicToggle hidden={!config.musikUrl || !opened} playing={playing} onToggle={toggleMusic} />
-        {config.musikUrl && <audio ref={audioRef} src={config.musikUrl} loop />}
+        {config.musikUrl && (
+          <audio
+            ref={audioRef}
+            src={config.musikUrl}
+            loop
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+          />
+        )}
       </div>
     </div>
   )

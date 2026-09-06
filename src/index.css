@@ -10,7 +10,121 @@
   --line: #dcd3b8;
   --shadow: 0 30px 60px -20px rgba(32, 40, 31, 0.35);
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --body-bg: radial-gradient(circle at 20% 10%, rgba(216, 192, 143, 0.12), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(199, 156, 147, 0.1), transparent 45%),
+    linear-gradient(160deg, #233a2c, #32503e 55%, #2c4635 100%);
 }
+
+/* ======================================================================
+   💎 LUXURY THEMES CONFIGURATION
+   ====================================================================== */
+
+/* 1. Emerald & Gold (Default Heritage) */
+:root:has([data-theme="emerald-gold"]),
+.stage[data-theme="emerald-gold"] {
+  --paper: #f5f1e4;
+  --paper-deep: #efe9d6;
+  --ink: #20281f;
+  --forest: #32503e;
+  --forest-deep: #233a2c;
+  --gold: #a9813e;
+  --gold-light: #d8c08f;
+  --rose: #c79c93;
+  --line: #dcd3b8;
+  --body-bg: radial-gradient(circle at 20% 10%, rgba(216, 192, 143, 0.12), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(199, 156, 147, 0.1), transparent 45%),
+    linear-gradient(160deg, #233a2c, #32503e 55%, #2c4635 100%);
+}
+
+/* 2. Royal Midnight & Champagne Gold (Dark Luxury) */
+:root:has([data-theme="midnight-gold"]),
+.stage[data-theme="midnight-gold"] {
+  --paper: #0d131f;
+  --paper-deep: #141d2e;
+  --ink: #f1f5f9;
+  --forest: #1e293b;
+  --forest-deep: #f3e4c4;
+  --gold: #d4af37;
+  --gold-light: #f5e6b8;
+  --rose: #dfb07a;
+  --line: rgba(212, 175, 55, 0.22);
+  --shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85);
+  --body-bg: radial-gradient(circle at 20% 10%, rgba(212, 175, 55, 0.15), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(197, 160, 89, 0.1), transparent 45%),
+    linear-gradient(160deg, #05080e, #0c121d 55%, #080c14 100%);
+}
+
+/* 3. Ivory Marble & Classic Gold (Timeless Elegance) */
+:root:has([data-theme="ivory-gold"]),
+.stage[data-theme="ivory-gold"] {
+  --paper: #faf7f2;
+  --paper-deep: #f2ebd9;
+  --ink: #1a1918;
+  --forest: #443f38;
+  --forest-deep: #1e1c1a;
+  --gold: #b3883b;
+  --gold-light: #e2cca0;
+  --rose: #c7ab95;
+  --line: #e4dcce;
+  --shadow: 0 30px 60px -20px rgba(35, 30, 25, 0.2);
+  --body-bg: radial-gradient(circle at 20% 10%, rgba(226, 204, 160, 0.18), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(199, 171, 149, 0.12), transparent 45%),
+    linear-gradient(160deg, #302c27, #3d3731 55%, #2a2622 100%);
+}
+
+/* 4. Velvet Burgundy & Rose Gold (Romantic Wine) */
+:root:has([data-theme="burgundy-rose"]),
+.stage[data-theme="burgundy-rose"] {
+  --paper: #1c070d;
+  --paper-deep: #280e16;
+  --ink: #f9eff1;
+  --forest: #451723;
+  --forest-deep: #fce2e6;
+  --gold: #d99b82;
+  --gold-light: #f2cebf;
+  --rose: #e08a96;
+  --line: rgba(217, 155, 130, 0.24);
+  --shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85);
+  --body-bg: radial-gradient(circle at 20% 10%, rgba(217, 155, 130, 0.15), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(224, 138, 150, 0.12), transparent 45%),
+    linear-gradient(160deg, #0f0206, #1c050c 55%, #120307 100%);
+}
+
+/* 5. Cashmere & Old Money Greige (Quiet Luxury) */
+:root:has([data-theme="cashmere-luxe"]),
+.stage[data-theme="cashmere-luxe"] {
+  --paper: #f3eee5;
+  --paper-deep: #e8dfd1;
+  --ink: #24201a;
+  --forest: #453e34;
+  --forest-deep: #221e18;
+  --gold: #9c7f53;
+  --gold-light: #d1be9b;
+  --rose: #bfa895;
+  --line: #dad0bf;
+  --shadow: 0 30px 60px -20px rgba(36, 32, 26, 0.25);
+  --body-bg: radial-gradient(circle at 20% 10%, rgba(209, 190, 155, 0.18), transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(191, 168, 149, 0.12), transparent 45%),
+    linear-gradient(160deg, #2b2620, #363029 55%, #231f1a 100%);
+}
+
+/* 6. Cinematic Romance & Frosted Glass (Custom Background + Floating Animation) */
+:root:has([data-theme="cinematic-romance"]),
+.stage[data-theme="cinematic-romance"] {
+  --paper: rgba(255, 255, 255, 0.82);
+  --paper-deep: rgba(248, 243, 236, 0.88);
+  --ink: #231f1b;
+  --forest: #443c34;
+  --forest-deep: #1e1914;
+  --gold: #b5893e;
+  --gold-light: #dec38e;
+  --rose: #d4a395;
+  --line: rgba(181, 137, 62, 0.3);
+  --shadow: 0 30px 70px -15px rgba(20, 15, 10, 0.3);
+  --body-bg: radial-gradient(circle at 50% 20%, rgba(222, 195, 142, 0.18), transparent 60%),
+    linear-gradient(160deg, #29241f, #362f28 55%, #201b17 100%);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -22,9 +136,7 @@ body {
 body {
   font-family: 'Jost', sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at 20% 10%, rgba(216, 192, 143, 0.12), transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(199, 156, 147, 0.1), transparent 45%),
-    linear-gradient(160deg, var(--forest-deep), var(--forest) 55%, #2c4635 100%);
+  background: var(--body-bg);
   min-height: 100vh;
 }
 #root {
@@ -866,6 +978,52 @@ select:focus-visible {
   text-align: center;
 }
 
+.music-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.music-upload__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.music-upload__player {
+  width: 100%;
+  margin-top: 4px;
+  border-radius: 8px;
+}
+.music-upload__remove {
+  padding: 8px 14px;
+  font-size: 11px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: #b3413a;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.music-upload__remove:hover {
+  background: rgba(179, 65, 58, 0.08);
+  border-color: #b3413a;
+}
+.music-upload__divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  opacity: 0.5;
+  margin: 4px 0;
+}
+.music-upload__divider::before,
+.music-upload__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
 .intake__submit-bar {
   margin-top: 8px;
   text-align: center;
@@ -884,3 +1042,366 @@ select:focus-visible {
 .intake__status--error {
   color: #b3413a;
 }
+
+/* ======================================================================
+   🎨 THEME SPECIFIC LUXURY REFINEMENTS
+   ====================================================================== */
+
+/* Dark themes specific adjustments */
+.stage[data-theme="midnight-gold"] .cover,
+.stage[data-theme="burgundy-rose"] .cover {
+  background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.12), transparent 60%), var(--paper);
+}
+
+.stage[data-theme="midnight-gold"] .cover__seal {
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent 75%), var(--paper-deep);
+  border-color: #d4af37;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.22), inset 0 0 15px rgba(212, 175, 55, 0.1);
+}
+
+.stage[data-theme="midnight-gold"] .btn--open {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+  border-color: #d4af37;
+  color: #f7e7ce;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+.stage[data-theme="midnight-gold"] .btn--open:hover {
+  background: #d4af37;
+  color: #0d131f;
+}
+
+.stage[data-theme="midnight-gold"] .rsvp__submit {
+  background: linear-gradient(135deg, #d4af37, #b88f28);
+  color: #0d131f;
+  border-color: #d4af37;
+  font-weight: 600;
+}
+.stage[data-theme="midnight-gold"] .rsvp__submit:hover {
+  background: linear-gradient(135deg, #f3e5ab, #d4af37);
+}
+
+.stage[data-theme="midnight-gold"] .field input,
+.stage[data-theme="midnight-gold"] .field select,
+.stage[data-theme="midnight-gold"] .field textarea {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.stage[data-theme="midnight-gold"] .music-toggle {
+  background: #d4af37;
+  color: #0d131f;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
+}
+
+/* Burgundy Rose theme adjustments */
+.stage[data-theme="burgundy-rose"] .cover__seal {
+  background: radial-gradient(circle, rgba(217, 155, 130, 0.2), transparent 75%), var(--paper-deep);
+  border-color: #d99b82;
+  box-shadow: 0 0 30px rgba(217, 155, 130, 0.25), inset 0 0 15px rgba(217, 155, 130, 0.1);
+}
+
+.stage[data-theme="burgundy-rose"] .btn--open {
+  background: linear-gradient(135deg, rgba(217, 155, 130, 0.2), rgba(217, 155, 130, 0.05));
+  border-color: #d99b82;
+  color: #fce2e6;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+.stage[data-theme="burgundy-rose"] .btn--open:hover {
+  background: #d99b82;
+  color: #1c070d;
+}
+
+.stage[data-theme="burgundy-rose"] .rsvp__submit {
+  background: linear-gradient(135deg, #d99b82, #b57258);
+  color: #1c070d;
+  border-color: #d99b82;
+  font-weight: 600;
+}
+.stage[data-theme="burgundy-rose"] .rsvp__submit:hover {
+  background: linear-gradient(135deg, #f2cebf, #d99b82);
+}
+
+.stage[data-theme="burgundy-rose"] .field input,
+.stage[data-theme="burgundy-rose"] .field select,
+.stage[data-theme="burgundy-rose"] .field textarea {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+.stage[data-theme="burgundy-rose"] .music-toggle {
+  background: #d99b82;
+  color: #1c070d;
+  box-shadow: 0 0 15px rgba(217, 155, 130, 0.35);
+}
+
+/* Ivory Gold adjustments */
+.stage[data-theme="ivory-gold"] .cover__seal {
+  background: #ffffff;
+  border-color: #b3883b;
+  box-shadow: 0 8px 24px rgba(179, 136, 59, 0.12);
+}
+
+/* Cashmere Luxe adjustments */
+.stage[data-theme="cashmere-luxe"] .cover__seal {
+  background: #ffffff;
+  border-color: #9c7f53;
+  box-shadow: 0 8px 24px rgba(156, 127, 83, 0.1);
+}
+
+/* ======================================================================
+   🖼️ THEME PICKER (ADMIN FORM)
+   ====================================================================== */
+.theme-picker__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+@media (min-width: 520px) {
+  .theme-picker__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.theme-card {
+  position: relative;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  background: var(--paper-deep);
+  transition: all 0.22s ease;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.theme-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.12);
+}
+.theme-card--active {
+  border-color: var(--gold);
+  background: var(--paper);
+  box-shadow: 0 0 0 2px var(--gold), 0 8px 24px -6px rgba(169, 129, 62, 0.25);
+}
+.theme-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+.theme-card__cat {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+.theme-card__name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 2px;
+  color: var(--forest-deep);
+}
+.theme-card__badge {
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.theme-card__badge--dark {
+  background: #0f172a;
+  color: #f8fafc;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+.theme-card__swatches {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.theme-card__swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.theme-card__desc {
+  font-size: 12px;
+  line-height: 1.45;
+  opacity: 0.75;
+}
+
+/* ======================================================================
+   🌸 CINEMATIC ROMANCE & FROSTED GLASS STYLING
+   ====================================================================== */
+.stage[data-theme="cinematic-romance"] .invite {
+  background-image: linear-gradient(rgba(253, 250, 245, 0.78), rgba(253, 250, 245, 0.85)),
+    var(--bg-custom-url, url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80'));
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.stage[data-theme="cinematic-romance"] .cover {
+  background: radial-gradient(circle at 50% 15%, rgba(181, 137, 62, 0.12), transparent 60%);
+}
+.stage[data-theme="cinematic-romance"] .panel,
+.stage[data-theme="cinematic-romance"] .quote,
+.stage[data-theme="cinematic-romance"] .event-card,
+.stage[data-theme="cinematic-romance"] .gift-card,
+.stage[data-theme="cinematic-romance"] .closing {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.07);
+}
+.stage[data-theme="cinematic-romance"] .cover__seal {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  border-color: #b5893e;
+  box-shadow: 0 0 25px rgba(181, 137, 62, 0.25);
+  animation: sealBreathe 4s infinite ease-in-out;
+}
+.stage[data-theme="cinematic-romance"] .btn--open {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  backdrop-filter: blur(8px);
+  border-color: #b5893e;
+  color: #1e1914;
+  box-shadow: 0 8px 24px rgba(181, 137, 62, 0.2);
+}
+.stage[data-theme="cinematic-romance"] .btn--open:hover {
+  background: #b5893e;
+  color: #fff;
+}
+
+/* ======================================================================
+   ✨ FLOATING PETALS & GOLDEN SPARKLES ANIMATION
+   ====================================================================== */
+.floating-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 35;
+}
+.floating-item {
+  position: absolute;
+  top: -50px;
+  will-change: transform;
+  animation: petalFall linear infinite;
+}
+.floating-item--petal {
+  color: #f7a8b8;
+  filter: drop-shadow(0 2px 5px rgba(220, 110, 135, 0.3));
+  opacity: 0.85;
+}
+.stage[data-theme="midnight-gold"] .floating-item--petal,
+.stage[data-theme="burgundy-rose"] .floating-item--petal {
+  color: #fca5b5;
+  filter: drop-shadow(0 0 6px rgba(255, 170, 190, 0.5));
+}
+.petal-svg {
+  display: block;
+  animation: petalSway ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+.floating-item--sparkle {
+  filter: drop-shadow(0 0 6px rgba(255, 220, 120, 0.9));
+}
+.sparkle-dot {
+  display: block;
+  background: radial-gradient(circle, #ffffff 10%, #d4af37 60%, transparent 100%);
+  border-radius: 50%;
+  animation: sparkleTwinkle ease-in-out infinite alternate;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  88% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+@keyframes petalSway {
+  0% {
+    transform: rotate(0deg) translateX(-18px) scale(0.85);
+  }
+  50% {
+    transform: rotate(180deg) translateX(18px) scale(1.08);
+  }
+  100% {
+    transform: rotate(360deg) translateX(-18px) scale(0.85);
+  }
+}
+@keyframes sparkleTwinkle {
+  0% {
+    opacity: 0.25;
+    transform: scale(0.6) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.35) rotate(45deg);
+  }
+}
+@keyframes sealBreathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(181, 137, 62, 0.2);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 35px rgba(181, 137, 62, 0.45);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floating-canvas {
+    display: none;
+  }
+  .stage[data-theme="cinematic-romance"] .cover__seal {
+    animation: none;
+  }
+}
+
+/* Custom background upload card in form */
+.bg-upload__preview {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  margin-top: 8px;
+}
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.toggle-switch input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+

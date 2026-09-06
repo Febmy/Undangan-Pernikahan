@@ -51,6 +51,155 @@ function PhotoUpload({ label, value, uploading, onFile }) {
   )
 }
 
+function MusicUpload({ value, uploading, onFile, onRemove, onUrlChange }) {
+  return (
+    <div className="music-upload">
+      <div className="music-upload__actions">
+        <label className="btn photo-upload__btn">
+          {uploading ? 'Mengunggah Lagu…' : value ? 'Ganti File Lagu (.mp3)' : 'Unggah File Lagu (.mp3)'}
+          <input
+            type="file"
+            accept="audio/*,.mp3,.m4a,.wav,.ogg"
+            hidden
+            disabled={uploading}
+            onChange={(e) => {
+              const file = e.target.files && e.target.files[0]
+              if (file) onFile(file)
+              e.target.value = ''
+            }}
+          />
+        </label>
+        {value && (
+          <button
+            type="button"
+            className="music-upload__remove"
+            onClick={onRemove}
+            disabled={uploading}
+          >
+            Hapus Musik
+          </button>
+        )}
+      </div>
+
+      {value && (
+        <div className="music-upload__preview">
+          <p className="field__hint" style={{ marginBottom: 6 }}>Pratinjau lagu:</p>
+          <audio controls src={value} preload="metadata" className="music-upload__player" />
+        </div>
+      )}
+
+      <div className="music-upload__divider">
+        <span>atau masukkan URL / file langsung</span>
+      </div>
+
+      <input
+        type="text"
+        placeholder="https://.../lagu.mp3 atau /lagu.mp3"
+        value={value}
+        onChange={(e) => onUrlChange(e.target.value)}
+      />
+    </div>
+  )
+}
+
+const THEMES = [
+  {
+    id: 'emerald-gold',
+    name: 'Imperial Emerald & Gold',
+    category: 'Botanical Heritage',
+    desc: 'Nuansa hijau zamrud bangsawan, kertas perkamen hangat, dan aksen emas klasik.',
+    palette: ['#233a2c', '#f5f1e4', '#a9813e', '#32503e'],
+    dark: false,
+  },
+  {
+    id: 'midnight-gold',
+    name: 'Royal Midnight & Gold',
+    category: 'Dark Luxury / Gala',
+    desc: 'Latar malam obsidian mewah dipadukan dengan emas berkilau dan nuansa gala dinner megah.',
+    palette: ['#0d131f', '#d4af37', '#f1f5f9', '#1a263c'],
+    dark: true,
+  },
+  {
+    id: 'ivory-gold',
+    name: 'Ivory Marble & Classic Gold',
+    category: 'Timeless Elegance',
+    desc: 'Putih gading bersih nan abadi, berkelas ala ballroom hotel bintang 5.',
+    palette: ['#faf7f2', '#b3883b', '#1a1918', '#e2cca0'],
+    dark: false,
+  },
+  {
+    id: 'burgundy-rose',
+    name: 'Velvet Burgundy & Rose Gold',
+    category: 'Venetian Romance',
+    desc: 'Nuansa anggur merah beludru yang kaya dan hangat, dipadukan dengan kilau rose gold romantis.',
+    palette: ['#1c070d', '#d99b82', '#f9eff1', '#451723'],
+    dark: true,
+  },
+  {
+    id: 'cashmere-luxe',
+    name: 'Cashmere & Old Money Greige',
+    category: 'Modern Minimalist Luxe',
+    desc: 'Estetika minimalis mahal bergaya desainer Paris, lembut dan menenangkan.',
+    palette: ['#f3eee5', '#9c7f53', '#24201a', '#d1be9b'],
+    dark: false,
+  },
+  {
+    id: 'cinematic-romance',
+    name: 'Cinematic Romance & Frosted Glass',
+    category: 'Custom Background & Petals',
+    desc: 'Foto background kustom dengan efek kaca beku (frosted glass) mewah dan animasi kelopak bunga/emas melayang.',
+    palette: ['#ffffff', '#b5893e', '#f7a8b8', '#231f1b'],
+    dark: false,
+  },
+]
+
+function ThemePicker({ currentTheme, onSelect }) {
+  return (
+    <div className="theme-picker">
+      <div className="theme-picker__grid">
+        {THEMES.map((t) => {
+          const isSelected = (currentTheme || 'emerald-gold') === t.id
+          return (
+            <div
+              key={t.id}
+              className={`theme-card${isSelected ? ' theme-card--active' : ''}`}
+              onClick={() => onSelect(t.id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && onSelect(t.id)}
+            >
+              <div className="theme-card__header">
+                <div>
+                  <span className="theme-card__cat">{t.category}</span>
+                  <div className="theme-card__name">{t.name}</div>
+                </div>
+                {isSelected ? (
+                  <span className="theme-card__badge">✓ Terpilih</span>
+                ) : t.dark ? (
+                  <span className="theme-card__badge theme-card__badge--dark">Dark Mode</span>
+                ) : null}
+              </div>
+
+              <div className="theme-card__swatches">
+                {t.palette.map((color, idx) => (
+                  <div
+                    key={idx}
+                    className="theme-card__swatch"
+                    style={{ backgroundColor: color }}
+                    title={color}
+                  />
+                ))}
+              </div>
+
+              <p className="theme-card__desc">{t.desc}</p>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function IntakeForm() {
   const [form, setForm] = useState(defaultConfig)
   const [initLoaded, setInitLoaded] = useState(false)
@@ -58,6 +207,8 @@ export default function IntakeForm() {
   const [saveState, setSaveState] = useState(null) // null | 'success' | 'error'
   const [uploadingFoto, setUploadingFoto] = useState({ pria: false, wanita: false })
   const [uploadingGaleri, setUploadingGaleri] = useState(false)
+  const [uploadingMusik, setUploadingMusik] = useState(false)
+  const [uploadingBg, setUploadingBg] = useState(false)
 
   useEffect(() => {
     let active = true
@@ -142,6 +293,42 @@ export default function IntakeForm() {
     }
   }
 
+  async function handleMusikUpload(file) {
+    if (!file) return
+    if (file.size > 25 * 1024 * 1024) {
+      alert('Ukuran file musik terlalu besar (maksimal 25MB). Silakan gunakan file berukuran lebih kecil.')
+      return
+    }
+    setUploadingMusik(true)
+    try {
+      const url = await uploadToStorage(file, 'musik')
+      updateField('musikUrl', url)
+    } catch (err) {
+      console.error('Upload musik gagal:', err)
+      alert('Gagal mengunggah file musik. Pastikan format file audio didukung dan coba lagi.')
+    } finally {
+      setUploadingMusik(false)
+    }
+  }
+
+  async function handleBgUpload(file) {
+    if (!file) return
+    if (file.size > 25 * 1024 * 1024) {
+      alert('Ukuran file foto terlalu besar (maksimal 25MB). Silakan gunakan file berukuran lebih kecil.')
+      return
+    }
+    setUploadingBg(true)
+    try {
+      const url = await uploadToStorage(file, 'background')
+      updateField('customBackgroundUrl', url)
+    } catch (err) {
+      console.error('Upload background gagal:', err)
+      alert('Gagal mengunggah foto background. Pastikan file gambar valid dan coba lagi.')
+    } finally {
+      setUploadingBg(false)
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setSaving(true)
@@ -176,6 +363,87 @@ export default function IntakeForm() {
       </div>
 
       <form onSubmit={handleSubmit}>
+        <section className="intake__section" style={{ borderTop: 'none', paddingTop: 0 }}>
+          <h2>Pilihan Tema &amp; Gaya Visual</h2>
+          <p className="field__hint" style={{ marginTop: -12, marginBottom: 16 }}>
+            Pilih nuansa visual dan kombinasi warna yang paling cocok untuk pernikahan kalian. Seluruh halaman undangan akan otomatis mengikuti tema ini.
+          </p>
+          <ThemePicker
+            currentTheme={form.tema}
+            onSelect={(themeId) => updateField('tema', themeId)}
+          />
+
+          <div style={{ marginTop: 22, paddingTop: 18, borderTop: '1px dashed var(--line)' }}>
+            <h3 style={{ fontSize: 16, marginBottom: 10, color: 'var(--forest-deep)' }}>
+              Pengaturan Background &amp; Animasi
+            </h3>
+
+            <Field
+              label="Foto Background Kustom (Opsional)"
+              hint="Direkomendasikan terutama untuk tema Cinematic Romance, atau foto prewedding kalian."
+            >
+              <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+                <label className="btn photo-upload__btn">
+                  {uploadingBg
+                    ? 'Mengunggah Foto…'
+                    : form.customBackgroundUrl
+                    ? 'Ganti Foto Background'
+                    : 'Unggah Foto Background'}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    disabled={uploadingBg}
+                    onChange={(e) => {
+                      const file = e.target.files && e.target.files[0]
+                      if (file) handleBgUpload(file)
+                      e.target.value = ''
+                    }}
+                  />
+                </label>
+                {form.customBackgroundUrl && (
+                  <button
+                    type="button"
+                    className="music-upload__remove"
+                    onClick={() => updateField('customBackgroundUrl', '')}
+                    disabled={uploadingBg}
+                  >
+                    Hapus (Kembali ke Default)
+                  </button>
+                )}
+              </div>
+
+              {form.customBackgroundUrl && (
+                <img
+                  src={form.customBackgroundUrl}
+                  alt="Background Preview"
+                  className="bg-upload__preview"
+                />
+              )}
+
+              <div style={{ marginTop: 10 }}>
+                <input
+                  type="text"
+                  placeholder="Atau masukkan URL foto background (https://...)"
+                  value={form.customBackgroundUrl || ''}
+                  onChange={(e) => updateField('customBackgroundUrl', e.target.value)}
+                />
+              </div>
+            </Field>
+
+            <div style={{ marginTop: 14 }}>
+              <label className="toggle-switch">
+                <input
+                  type="checkbox"
+                  checked={form.animasiKelopak !== false}
+                  onChange={(e) => updateField('animasiKelopak', e.target.checked)}
+                />
+                <span>Aktifkan animasi kelopak bunga &amp; partikel emas melayang di undangan ✨🌸</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
         <section className="intake__section">
           <h2>Info Utama</h2>
           <Field label="Judul kecil di atas nama (eyebrow)">
@@ -515,12 +783,16 @@ export default function IntakeForm() {
               onChange={(e) => updateField('whatsapp', e.target.value)}
             />
           </Field>
-          <Field label="Link musik latar / mp3 (opsional)">
-            <input
-              type="url"
-              placeholder="https://..."
+          <Field
+            label="Musik latar / lagu (.mp3)"
+            hint="Unggah file lagu dari perangkat Anda atau masukkan link audio langsung."
+          >
+            <MusicUpload
               value={form.musikUrl}
-              onChange={(e) => updateField('musikUrl', e.target.value)}
+              uploading={uploadingMusik}
+              onFile={handleMusikUpload}
+              onRemove={() => updateField('musikUrl', '')}
+              onUrlChange={(val) => updateField('musikUrl', val)}
             />
           </Field>
           <Field label="Pesan penutup">

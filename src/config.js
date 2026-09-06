@@ -6,6 +6,9 @@
  * ======================================================================
  */
 const config = {
+  tema: 'emerald-gold', // 'emerald-gold' | 'midnight-gold' | 'ivory-gold' | 'burgundy-rose' | 'cashmere-luxe' | 'cinematic-romance'
+  customBackgroundUrl: '', // URL foto background kustom (opsional)
+  animasiKelopak: true, // Animasi kelopak bunga & kilau emas melayang
   eyebrow: 'Undangan Pernikahan',
   guestFallback: 'Tamu Undangan', // ditampilkan jika link dibuka tanpa ?to=Nama
 
