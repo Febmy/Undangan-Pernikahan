@@ -43,3 +43,27 @@ export async function copyText(text) {
     return false
   }
 }
+
+/**
+ * Membaca nama tamu dari URL secara cerdas.
+ * Mendukung spasi, tanda '+', tanda '&' mentah, maupun '%26',
+ * sehingga nama seperti "Febmy & Partner" tidak terpotong.
+ */
+export function getGuestNameFromUrl(search = typeof window !== 'undefined' ? window.location.search : '') {
+  if (!search) return ''
+
+  // Tangkap seluruh nilai setelah ?to=, ?nama=, atau ?name= sampai batas anchor (#) atau param berikutnya (&key=)
+  const match = search.match(/[?&](?:to|nama|name)=((?:(?!&[a-zA-Z_0-9]+=)[^#])*)/i)
+  if (match && match[1]) {
+    try {
+      const decoded = decodeURIComponent(match[1].replace(/\+/g, ' '))
+      return decoded.trim()
+    } catch {
+      return match[1].replace(/\+/g, ' ').trim()
+    }
+  }
+
+  const params = new URLSearchParams(search)
+  return params.get('to') || params.get('nama') || params.get('name') || ''
+}
+

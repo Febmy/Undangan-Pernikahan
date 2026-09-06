@@ -14,6 +14,7 @@ import FloatingAnimation from '../components/FloatingAnimation'
 import useWeddingConfig from '../hooks/useWeddingConfig'
 
 import { getOptimizedImageUrl } from '../imageUtils'
+import { getGuestNameFromUrl } from '../utils'
 
 export default function Invitation() {
   const { config, loaded } = useWeddingConfig()
@@ -21,10 +22,9 @@ export default function Invitation() {
   const [playing, setPlaying] = useState(false)
   const audioRef = useRef(null)
 
-  // Nama tamu dibaca dari URL, contoh: https://domain-anda.com/?to=Budi%20%26%20Keluarga
+  // Nama tamu dibaca dari URL cerdas (mendukung 'Febmy & Partner', spasi, maupun %26)
   const guestName = useMemo(() => {
-    const params = new URLSearchParams(window.location.search)
-    return params.get('to') || params.get('nama') || params.get('name') || ''
+    return getGuestNameFromUrl()
   }, [])
 
   function startMusic() {
