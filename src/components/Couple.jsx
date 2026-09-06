@@ -1,13 +1,24 @@
 import useReveal from '../hooks/useReveal'
+import OptimizedImage from './OptimizedImage'
 
 function Person({ p }) {
+  const initial = p.namaPanggilan ? p.namaPanggilan[0] : '•'
+
   return (
     <div className="person">
       <div className="person__photo">
         {p.foto ? (
-          <img src={p.foto} alt={`Foto ${p.namaPanggilan}`} />
+          <OptimizedImage
+            src={p.foto}
+            alt={`Foto ${p.namaPanggilan}`}
+            targetWidth={260}
+            quality={85}
+            aspectRatio="1/1"
+            fallbackType="initial"
+            fallbackInitial={initial}
+          />
         ) : (
-          <span className="person__initial">{p.namaPanggilan[0] || '•'}</span>
+          <span className="person__initial">{initial}</span>
         )}
       </div>
       <h3 className="person__name">{p.namaLengkap}</h3>

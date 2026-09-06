@@ -7,9 +7,27 @@ import defaultConfig from '../config'
  * Jika belum ada data tersimpan, dipakai data contoh dari src/config.js
  * sebagai tampilan awal/preview.
  */
+const CACHE_KEY = 'wedding_config_cache'
+
+function getInitialConfig() {
+  try {
+    const cached = localStorage.getItem(CACHE_KEY)
+    if (cached) {
+      const parsed = JSON.parse(cached)
+      if (parsed && typeof parsed === 'object') {
+        return { config: parsed, isCached: true }
+      }
+    }
+  } catch {
+    // Abaikan error localStorage (private browsing)
+  }
+  return { config: defaultConfig, isCached: false }
+}
+
 export default function useWeddingConfig() {
-  const [config, setConfig] = useState(defaultConfig)
-  const [loaded, setLoaded] = useState(false)
+  const initial = getInitialConfig()
+  const [config, setConfig] = useState(initial.config)
+  const [loaded, setLoaded] = useState(initial.isCached)
 
   useEffect(() => {
     let active = true
@@ -24,9 +42,14 @@ export default function useWeddingConfig() {
 
         if (active && !error && data && data.data) {
           setConfig(data.data)
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(data.data))
+          } catch {
+            // Abaikan kuota localStorage
+          }
         }
       } catch {
-        // Gagal memuat dari Supabase — tetap pakai data default
+        // Gagal memuat dari Supabase — tetap pakai data yang ada
       } finally {
         if (active) setLoaded(true)
       }

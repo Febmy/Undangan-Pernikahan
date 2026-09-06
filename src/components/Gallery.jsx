@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import useReveal from '../hooks/useReveal'
+import OptimizedImage from './OptimizedImage'
 
 export default function Gallery({ config }) {
   const [ref, visible] = useReveal()
@@ -16,7 +17,14 @@ export default function Gallery({ config }) {
         {photos.length > 0
           ? photos.map((src, i) => (
               <div className="gallery__tile" key={i} onClick={() => setSelected(src)}>
-                <img src={src} alt="Galeri" loading="lazy" />
+                <OptimizedImage
+                  src={src}
+                  alt={`Momen Foto ${i + 1}`}
+                  targetWidth={360}
+                  quality={80}
+                  aspectRatio="1/1"
+                  fallbackType="gallery"
+                />
               </div>
             ))
           : Array.from({ length: 6 }).map((_, i) => (
@@ -30,7 +38,17 @@ export default function Gallery({ config }) {
           <button className="lightbox__close" onClick={() => setSelected(null)}>
             Tutup
           </button>
-          <img src={selected} alt="" onClick={(e) => e.stopPropagation()} />
+          <div className="lightbox__content" onClick={(e) => e.stopPropagation()}>
+            <OptimizedImage
+              src={selected}
+              alt="Pratinjau Foto"
+              targetWidth={1200}
+              quality={85}
+              loading="eager"
+              fetchPriority="high"
+              fallbackType="gallery"
+            />
+          </div>
         </div>
       )}
     </section>

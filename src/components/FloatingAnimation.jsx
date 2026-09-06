@@ -1,15 +1,15 @@
 import { useMemo } from 'react'
 
 export default function FloatingAnimation({ active = true }) {
-  // Buat 16 partikel dengan posisi, delay, dan durasi acak terprediksi
+  // Gunakan 10 partikel elegan agar animasi sangat ringan di HP dan baterai awet
   const particles = useMemo(() => {
-    return Array.from({ length: 16 }).map((_, i) => {
-      const isSparkle = i % 4 === 0
-      const left = (i * 6.25 + (i % 3) * 3) % 96 + 2 // 2% - 98%
-      const size = isSparkle ? 4 + (i % 3) * 2 : 12 + (i % 4) * 4 // px
-      const duration = 9 + (i % 5) * 2.5 // 9s - 19s
-      const delay = (i * 0.7) % 7 // 0s - 7s
-      const swayDuration = 3 + (i % 3) // 3s - 5s
+    return Array.from({ length: 10 }).map((_, i) => {
+      const isSparkle = i % 3 === 0
+      const left = (i * 10 + (i % 3) * 4) % 94 + 3 // 3% - 97%
+      const size = isSparkle ? 4 + (i % 3) * 2 : 11 + (i % 3) * 3 // px
+      const duration = 11 + (i % 4) * 2.5 // 11s - 21s
+      const delay = (i * 0.9) % 6 // 0s - 6s
+      const swayDuration = 3.5 + (i % 3) * 0.8 // 3.5s - 5.1s
       return {
         id: i,
         isSparkle,

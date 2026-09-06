@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { supabase } from '../supabaseClient'
 import { isoToLocalInput, localInputToIso } from '../utils'
 import defaultConfig from '../config'
+import { compressImage } from '../imageUtils'
 
 const newAcara = () => ({
   label: '',
@@ -267,7 +268,8 @@ export default function IntakeForm() {
   async function handleFotoUpload(sisi, file) {
     setUploadingFoto((u) => ({ ...u, [sisi]: true }))
     try {
-      const url = await uploadToStorage(file, `mempelai-${sisi}`)
+      const compressed = await compressImage(file, { maxWidth: 1000, maxHeight: 1000, quality: 0.85 })
+      const url = await uploadToStorage(compressed, `mempelai-${sisi}`)
       updateMempelai(sisi, 'foto', url)
     } catch {
       alert('Gagal mengunggah foto. Silakan coba lagi.')
@@ -282,7 +284,9 @@ export default function IntakeForm() {
       const urls = []
       for (const file of files) {
         // eslint-disable-next-line no-await-in-loop
-        const url = await uploadToStorage(file, 'galeri')
+        const compressed = await compressImage(file, { maxWidth: 1600, maxHeight: 1600, quality: 0.85 })
+        // eslint-disable-next-line no-await-in-loop
+        const url = await uploadToStorage(compressed, 'galeri')
         urls.push(url)
       }
       setForm((f) => ({ ...f, galeri: [...f.galeri, ...urls] }))
@@ -319,7 +323,8 @@ export default function IntakeForm() {
     }
     setUploadingBg(true)
     try {
-      const url = await uploadToStorage(file, 'background')
+      const compressed = await compressImage(file, { maxWidth: 1920, maxHeight: 1920, quality: 0.85 })
+      const url = await uploadToStorage(compressed, 'background')
       updateField('customBackgroundUrl', url)
     } catch (err) {
       console.error('Upload background gagal:', err)
@@ -337,7 +342,16 @@ export default function IntakeForm() {
       .from('wedding_config')
       .upsert({ id: 1, data: form, updated_at: new Date().toISOString() })
     setSaving(false)
-    setSaveState(error ? 'error' : 'success')
+    if (!error) {
+      try {
+        localStorage.setItem('wedding_config_cache', JSON.stringify(form))
+      } catch {
+        // Abaikan kuota localStorage
+      }
+      setSaveState('success')
+    } else {
+      setSaveState('error')
+    }
   }
 
   if (!initLoaded) {

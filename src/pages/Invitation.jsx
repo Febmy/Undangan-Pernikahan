@@ -13,6 +13,8 @@ import MusicToggle from '../components/MusicToggle'
 import FloatingAnimation from '../components/FloatingAnimation'
 import useWeddingConfig from '../hooks/useWeddingConfig'
 
+import { getOptimizedImageUrl } from '../imageUtils'
+
 export default function Invitation() {
   const { config, loaded } = useWeddingConfig()
   const [opened, setOpened] = useState(false)
@@ -48,16 +50,27 @@ export default function Invitation() {
 
   if (!loaded) {
     return (
-      <div className="stage">
+      <div className="stage" data-theme={config.tema || 'emerald-gold'}>
         <div className="invite">
-          <div className="loading-screen">Memuat undangan…</div>
+          <div className="splash-screen">
+            <div className="splash-seal">
+              <span className="splash-seal__spin" />
+              <span className="splash-seal__text">✦</span>
+            </div>
+            <p className="eyebrow" style={{ marginTop: 20 }}>Undangan Pernikahan</p>
+            <p className="splash-note">Mempersiapkan lembar undangan…</p>
+          </div>
         </div>
       </div>
     )
   }
 
-  const stageStyle = config.customBackgroundUrl
-    ? { '--bg-custom-url': `url("${config.customBackgroundUrl}")` }
+  const optimizedBg = config.customBackgroundUrl
+    ? getOptimizedImageUrl(config.customBackgroundUrl, { width: 1080, quality: 80 })
+    : ''
+
+  const stageStyle = optimizedBg
+    ? { '--bg-custom-url': `url("${optimizedBg}")` }
     : undefined
 
   return (
@@ -94,6 +107,7 @@ export default function Invitation() {
           <audio
             ref={audioRef}
             src={config.musikUrl}
+            preload="none"
             loop
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}

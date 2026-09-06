@@ -319,6 +319,15 @@ select:focus-visible {
 .panel + .panel {
   border-top: 1px solid var(--line);
 }
+/* Optimasi render offscreen: hindari pemborosan render sebelum di-scroll */
+.panel.story,
+.panel.gallery,
+.panel.gifts,
+.panel.rsvp,
+.panel.closing {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 420px;
+}
 .panel__head {
   text-align: center;
   margin-bottom: 30px;
@@ -597,6 +606,7 @@ select:focus-visible {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
 }
 .gallery__tile img {
   width: 100%;
@@ -612,15 +622,105 @@ select:focus-visible {
   padding: 6px;
   letter-spacing: 0.04em;
 }
+
+/* Fallback elegan jika gambar galeri gagal dimuat */
+.gallery__placeholder-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  text-align: center;
+  background: var(--paper-deep);
+  color: var(--gold);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.gallery__placeholder-icon {
+  width: 22px;
+  height: 22px;
+  opacity: 0.75;
+}
+
+/* Skeleton Shimmer & Optimized Image Container */
+.img-container {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper-deep);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img-fluid {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
+.img-fluid.is-loaded {
+  opacity: 1;
+}
+.img-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(216, 192, 143, 0.06) 0%,
+    rgba(216, 192, 143, 0.2) 50%,
+    rgba(216, 192, 143, 0.06) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerMove 1.6s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes shimmerMove {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(32, 40, 31, 0.92);
+  background: rgba(32, 40, 31, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
   padding: 24px;
+}
+.lightbox__content {
+  max-width: 90vw;
+  max-height: 82vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+.lightbox__content .img-container {
+  max-width: 90vw;
+  max-height: 82vh;
+  background: transparent;
+}
+.lightbox__content img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
 }
 .lightbox img {
   max-width: 100%;
@@ -835,7 +935,7 @@ select:focus-visible {
   display: none;
 }
 
-/* ---------- Loading ---------- */
+/* ---------- Loading & Luxury Splash Screen ---------- */
 .loading-screen {
   min-height: 100vh;
   display: flex;
@@ -847,6 +947,56 @@ select:focus-visible {
   color: var(--forest-deep);
   text-align: center;
   padding: 24px;
+}
+.splash-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  background: radial-gradient(circle at 50% 30%, rgba(169, 129, 62, 0.12), transparent 60%), var(--paper);
+}
+.splash-seal {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-deep);
+  box-shadow: 0 0 24px rgba(169, 129, 62, 0.18);
+}
+.splash-seal__spin {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1.5px dashed var(--gold-light);
+  animation: sealSpin 12s linear infinite;
+}
+.splash-seal__text {
+  font-size: 22px;
+  color: var(--gold);
+  animation: sealPulse 2s ease-in-out infinite;
+}
+.splash-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 19px;
+  color: var(--forest-deep);
+  margin-top: 8px;
+  opacity: 0.85;
+}
+@keyframes sealSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes sealPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.18); opacity: 1; }
 }
 
 /* ---------- Intake form (/isi-data) ---------- */
@@ -1305,10 +1455,15 @@ select:focus-visible {
    ====================================================================== */
 .stage[data-theme="cinematic-romance"] .invite {
   background-image: linear-gradient(rgba(253, 250, 245, 0.78), rgba(253, 250, 245, 0.85)),
-    var(--bg-custom-url, url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80'));
+    var(--bg-custom-url, url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=960&q=75'));
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: scroll;
+}
+@media (hover: hover) and (pointer: fine) {
+  .stage[data-theme="cinematic-romance"] .invite {
+    background-attachment: fixed;
+  }
 }
 .stage[data-theme="cinematic-romance"] .cover {
   background: radial-gradient(circle at 50% 15%, rgba(181, 137, 62, 0.12), transparent 60%);
@@ -1386,6 +1541,7 @@ select:focus-visible {
   pointer-events: none;
   overflow: hidden;
   z-index: 35;
+  contain: strict;
 }
 .floating-item {
   position: absolute;
