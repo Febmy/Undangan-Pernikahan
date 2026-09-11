@@ -6,6 +6,14 @@ export default function Gifts({ config }) {
   const [ref, visible] = useReveal()
   const [copiedIdx, setCopiedIdx] = useState(null)
 
+  const hadiahList = (config?.hadiah || []).filter(
+    (g) => g && (String(g.bank || '').trim() || String(g.nomor || '').trim())
+  )
+
+  if (hadiahList.length === 0) {
+    return null
+  }
+
   async function handleCopy(nomor, idx) {
     const ok = await copyText(nomor)
     if (ok) {
@@ -24,14 +32,18 @@ export default function Gifts({ config }) {
         Doa restu Anda adalah hadiah terindah. Namun jika ingin memberi tanda kasih, kami sediakan
         dalam bentuk cashless.
       </p>
-      {config.hadiah.map((g, i) => (
+      {hadiahList.map((g, i) => (
         <div className="gift-card" key={i}>
           <div className="gift-card__info">
             <p className="gift-card__bank">{g.bank}</p>
             <p className="gift-card__num">{g.nomor}</p>
-            <p className="gift-card__holder">a.n. {g.atasNama}</p>
+            {g.atasNama ? <p className="gift-card__holder">a.n. {g.atasNama}</p> : null}
           </div>
-          <button className="btn" onClick={() => handleCopy(g.nomor, i)}>
+          <button
+            className="btn"
+            onClick={() => handleCopy(g.nomor, i)}
+            aria-label={`Salin nomor ${g.bank || 'rekening'}`}
+          >
             {copiedIdx === i ? 'Tersalin ✓' : 'Salin'}
           </button>
         </div>

@@ -81,7 +81,7 @@ const config = {
     // 'https://contoh.com/foto2.jpg',
   ],
 
-  // Rekening / e-wallet untuk kado digital
+  // Rekening / e-wallet untuk kado digital (bisa 1 hingga maksimal 5 rekening)
   hadiah: [
     { bank: 'Bank BCA', nomor: '1234567890', atasNama: 'Bunga Lestari' },
     { bank: 'GoPay', nomor: '0812-3456-7890', atasNama: 'Bunga Lestari' },

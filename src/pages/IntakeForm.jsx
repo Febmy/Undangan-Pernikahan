@@ -18,6 +18,29 @@ const newAcara = () => ({
 const newKisah = () => ({ tahun: '', judul: '', cerita: '' })
 const newHadiah = () => ({ bank: '', nomor: '', atasNama: '' })
 
+export const MAX_HADIAH = 5
+
+export const BANK_SUGGESTIONS = [
+  'Bank BCA',
+  'Bank Mandiri',
+  'Bank BRI',
+  'Bank BNI',
+  'Bank Syariah Indonesia (BSI)',
+  'Bank CIMB Niaga',
+  'Bank Permata',
+  'Bank Danamon',
+  'Bank Tabungan Negara (BTN)',
+  'Bank Jago',
+  'SeaBank',
+  'Bank Neo Commerce',
+  'Jenius (BTPN)',
+  'GoPay',
+  'OVO',
+  'DANA',
+  'ShopeePay',
+  'LinkAja',
+]
+
 function Field({ label, hint, children }) {
   return (
     <div className="field">
@@ -220,7 +243,13 @@ export default function IntakeForm() {
         .eq('id', 1)
         .maybeSingle()
       if (active) {
-        if (!error && data && data.data) setForm(data.data)
+        if (!error && data && data.data) {
+          setForm({
+            ...defaultConfig,
+            ...data.data,
+            hadiah: Array.isArray(data.data.hadiah) ? data.data.hadiah : (defaultConfig.hadiah || []),
+          })
+        }
         setInitLoaded(true)
       }
     }
@@ -244,16 +273,20 @@ export default function IntakeForm() {
   }
   function updateArrayItem(key, idx, field, value) {
     setForm((f) => {
-      const arr = [...f[key]]
+      const arr = [...(f[key] || [])]
       arr[idx] = { ...arr[idx], [field]: value }
       return { ...f, [key]: arr }
     })
   }
   function addArrayItem(key, template) {
-    setForm((f) => ({ ...f, [key]: [...f[key], template()] }))
+    setForm((f) => {
+      const current = f[key] || []
+      if (key === 'hadiah' && current.length >= MAX_HADIAH) return f
+      return { ...f, [key]: [...current, template()] }
+    })
   }
   function removeArrayItem(key, idx) {
-    setForm((f) => ({ ...f, [key]: f[key].filter((_, i) => i !== idx) }))
+    setForm((f) => ({ ...f, [key]: (f[key] || []).filter((_, i) => i !== idx) }))
   }
 
   async function uploadToStorage(file, prefix) {
@@ -747,45 +780,86 @@ export default function IntakeForm() {
         </section>
 
         <section className="intake__section">
-          <h2>Kado Digital</h2>
-          {form.hadiah.map((g, idx) => (
+          <div className="section-head-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <h2 style={{ margin: 0 }}>Kado Digital</h2>
+            <span style={{ fontSize: '12px', padding: '4px 10px', borderRadius: '12px', background: 'var(--paper-deep)', border: '1px solid var(--line)', color: 'var(--ink)' }}>
+              {(form.hadiah || []).length} / {MAX_HADIAH} Rekening
+            </span>
+          </div>
+          <p className="field__hint" style={{ marginBottom: '16px' }}>
+            Bisa ditambahkan hingga maksimal {MAX_HADIAH} rekening bank atau e-wallet untuk kado cashless.
+          </p>
+
+          <datalist id="bank-list-options">
+            {BANK_SUGGESTIONS.map((bank) => (
+              <option key={bank} value={bank} />
+            ))}
+          </datalist>
+
+          {(form.hadiah || []).map((g, idx) => (
             <div className="array-card" key={idx}>
-              {form.hadiah.length > 1 && (
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--gold)' }}>
+                  Rekening #{idx + 1}
+                </span>
                 <button
                   type="button"
                   className="array-card__remove"
                   onClick={() => removeArrayItem('hadiah', idx)}
                   aria-label="Hapus rekening ini"
+                  title="Hapus rekening"
                 >
                   ×
                 </button>
-              )}
-              <Field label="Nama bank / e-wallet">
+              </div>
+
+              <Field label="Nama bank / e-wallet" hint="Pilih dari daftar saran atau ketik manual">
                 <input
                   type="text"
-                  value={g.bank}
+                  list="bank-list-options"
+                  placeholder="Contoh: Bank BCA, Bank Mandiri, GoPay..."
+                  value={g.bank || ''}
                   onChange={(e) => updateArrayItem('hadiah', idx, 'bank', e.target.value)}
                 />
               </Field>
               <Field label="Nomor rekening / nomor akun">
                 <input
                   type="text"
-                  value={g.nomor}
+                  placeholder="Contoh: 1234567890"
+                  value={g.nomor || ''}
                   onChange={(e) => updateArrayItem('hadiah', idx, 'nomor', e.target.value)}
                 />
               </Field>
               <Field label="Atas nama">
                 <input
                   type="text"
-                  value={g.atasNama}
+                  placeholder="Contoh: Nama Pemilik Rekening"
+                  value={g.atasNama || ''}
                   onChange={(e) => updateArrayItem('hadiah', idx, 'atasNama', e.target.value)}
                 />
               </Field>
             </div>
           ))}
-          <button type="button" className="array-add" onClick={() => addArrayItem('hadiah', newHadiah)}>
-            + Tambah Rekening
-          </button>
+
+          {(form.hadiah || []).length === 0 && (
+            <div style={{ textAlign: 'center', padding: '16px', border: '1px dashed var(--line)', borderRadius: '10px', marginBottom: '16px', color: 'var(--ink)', opacity: 0.8, fontSize: '13px' }}>
+              Belum ada rekening kado digital. Klik tombol di bawah untuk menambahkan (maksimal {MAX_HADIAH}).
+            </div>
+          )}
+
+          {(form.hadiah || []).length < MAX_HADIAH ? (
+            <button
+              type="button"
+              className="array-add"
+              onClick={() => addArrayItem('hadiah', newHadiah)}
+            >
+              + Tambah Rekening ({(form.hadiah || []).length}/{MAX_HADIAH})
+            </button>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '10px', borderRadius: '8px', background: 'rgba(169, 129, 62, 0.08)', border: '1px solid var(--line)', fontSize: '12px', color: 'var(--gold)' }}>
+              ✓ Batas maksimal {MAX_HADIAH} rekening telah tercapai
+            </div>
+          )}
         </section>
 
         <section className="intake__section">
